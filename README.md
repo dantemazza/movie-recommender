@@ -1,2 +1,2 @@
 # PoetryPlus
-Flask/MySQL based recommender system for poetry
+Flask/MySQL based recommender system for movies. 
