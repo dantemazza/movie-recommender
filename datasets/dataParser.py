@@ -1,5 +1,5 @@
 import csv
-
+import common.const as const
 
 
 def convert_to_list(filename):
@@ -42,7 +42,5 @@ for j in range(len(all_movie_data)-1, -1, -1):
     else:
         del all_movie_data[j]
 
-x = 5
-
-
-
+const.movieid_to_title = movieid_to_title
+const.all_movie_data = all_movie_data
