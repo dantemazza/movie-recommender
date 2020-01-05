@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect
 from flask_mysqldb import MySQL
 import yaml
+from statements import *
+from model import *
 
 app = Flask(__name__)
 
@@ -16,21 +18,26 @@ mysql = MySQL(app)
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        #fetch form data
-        ratingDetails = request.form
-        title = ratingDetails['title']
-        rating = ratingDetails['rating']
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO useratings(title, rating) VALUES(%s, %s)", (title, rating))
-        mysql.connection.commit()
-        cur.close()
-        return redirect('/useratings')
+        if "train" in request.form:
+
+            return 'success'
+        
+        elif "title" in request.form:
+            #fetch form data
+            ratingDetails = request.form
+            title = ratingDetails['title']
+            rating = ratingDetails['rating']
+            cur = mysql.connection.cursor()
+            cur.execute(insert_rating.format(title, rating))
+            mysql.connection.commit()
+            cur.close()
+            return redirect('/ratings')
     return render_template('index.html')
 
-@app.route('/useratings')
-def useratings():
+@app.route('/ratings')
+def showRatings():
     cur = mysql.connection.cursor()
-    res = cur.execute('SELECT * from useratings')
+    res = cur.execute('SELECT * from ratings')
     if res > 0:
          ratingDetails = cur.fetchall()
          return render_template('ratings.html', ratingDetails=ratingDetails)

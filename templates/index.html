@@ -1,11 +1,20 @@
 <html>
+    <head>
+        <title>movie-recommender</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+    </head>
     <body>
+        <div class = "container">
             <form method="POST" action="">
-                Title  <input type="text" name="title" />
+                Title:<input type="text" name="title" required="required"/>
                 <br>
-                Rating <input type="number" name="rating" />
+                Rating:<input type="number" name="rating" required="required"/>
                 <br>
                 <input type="submit">
+            </form>
+        </div>
+            <form method="POST" action = "">
+                <input type="submit" value="Train" name="train"/>
             </form>
     </body>
 </html>
