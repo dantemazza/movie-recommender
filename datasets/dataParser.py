@@ -45,5 +45,5 @@ def parseData():
 
     const.movieid_to_title = movieid_to_title
     const.all_movie_data = all_movie_data
-    const.num_of_users = all_movie_data[-1][0]
+    const.num_of_users = int(all_movie_data[-1][0])
     const.num_of_movies = len(movieid_to_title.keys())
