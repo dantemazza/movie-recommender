@@ -19,9 +19,7 @@ mysql = MySQL(app)
 def index():
     if request.method == 'POST':
         if "train" in request.form:
-
             return 'success'
-        
         elif "title" in request.form:
             #fetch form data
             ratingDetails = request.form
