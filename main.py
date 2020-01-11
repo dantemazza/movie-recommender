@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect
 from flask_mysqldb import MySQL
 import yaml
 from statements import *
-from model import *
+import launch, train, dataParser
+import datasets.dataParser as ds
 
 app = Flask(__name__)
 
@@ -14,11 +15,14 @@ app.config['MYSQL_PASSWORD'] = db['mysql_password']
 app.config['MYSQL_DB'] = db['mysql_db']
 
 mysql = MySQL(app)
+ds.parseData()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         if "train" in request.form:
+
+            train.train()
             return 'success'
         elif "title" in request.form:
             #fetch form data
@@ -29,6 +33,7 @@ def index():
             cur.execute(insert_rating.format(title, rating))
             mysql.connection.commit()
             cur.close()
+
             return redirect('/ratings')
     return render_template('index.html')
 
