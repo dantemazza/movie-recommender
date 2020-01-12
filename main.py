@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, redirect
 from flask_mysqldb import MySQL
 import yaml
-from statements import *
-import launch, train, dataParser
+from common.statements import *
+import train
 import datasets.dataParser as ds
+import common.configuration as config
+import common.const as const
 
 app = Flask(__name__)
 
@@ -15,26 +17,36 @@ app.config['MYSQL_PASSWORD'] = db['mysql_password']
 app.config['MYSQL_DB'] = db['mysql_db']
 
 mysql = MySQL(app)
-ds.parseData()
+if config.launch:
+    exec("launch.py")
+else:
+    ds.parseData()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    cur = mysql.connection.cursor()
     if request.method == 'POST':
-        if "train" in request.form:
-
-            train.train()
-            return 'success'
+        if "output" in request.form:
+            if config.train:
+                cur = mysql.connection.cursor()
+                cur.execute(get_ratings)
+                data = cur.fetchall()
+                train.train(data)
+            movies = train.output()
+            return const.html_list_wrapper.format(*movies)
         elif "title" in request.form:
             #fetch form data
             ratingDetails = request.form
             title = ratingDetails['title']
             rating = ratingDetails['rating']
-            cur = mysql.connection.cursor()
             cur.execute(insert_rating.format(title, rating))
             mysql.connection.commit()
             cur.close()
-
             return redirect('/ratings')
+        # elif "search" in request.form:
+        #     search = request.form
+        #     search_text = search['search']
+
     return render_template('index.html')
 
 @app.route('/ratings')
