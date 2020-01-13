@@ -17,9 +17,9 @@ def train(data):
     X = np.random.rand(const.num_of_movies, config.num_X_genres)
     THETA = np.random.rand(const.num_of_users + 1, config.num_X_genres)
 
-    # implementation of gradient descent on the user theta vector
+    # implementation of collaborative filtering
     for i in range(config.iterations):
-        print(i)
+        # print(i)
         for u, theta in enumerate(THETA):
             regTerm_theta = config.lambda_reg * theta
             regTerm_theta[0] = 0
@@ -27,7 +27,7 @@ def train(data):
             THETA[u, :] = theta - config.alpha * thetaGrad
         for m, x in enumerate(X):
             regTerm_x = config.lambda_reg * x
-            regTerm_theta[0] = 0
+            regTerm_x[0] = 0
             xGrad = np.matmul(THETA.T, (np.matmul(THETA, x.T).T - Y[m, :])) + regTerm_x
             X[m, :] = x - config.alpha * xGrad
 
