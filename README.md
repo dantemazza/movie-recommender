@@ -20,4 +20,4 @@ iterations = 1000
 launch = False
 train = False
 ```
-Alpha is the learning rate used for gradient descent, launch reloads the training data and train will restart the model. 
+Alpha is the learning rate used for gradient descent, launch reloads the training data, and train will recalibrate the model. 
